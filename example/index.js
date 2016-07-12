@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react');
-var ColorPicker = require('../');
+var ColorPicker = require('../dist/colorpickr');
 
 // Output fill that's outside of the react app.
 var outputFill = document.getElementById('output-fill');

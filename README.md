@@ -9,7 +9,7 @@ __[Demo](https://www.mapbox.com/react-colorpickr/example/)__
 
     npm install react-colorpickr
 
-You'll also want to include a copy of [react-colorpickr.css](https://github.com/mapbox/react-colorpickr/blob/mb-pages/react-colorpickr.css) in your code.
+You'll also want to include a copy of [colorpickr.css](https://github.com/mapbox/react-colorpickr/blob/mb-pages/dist/colorpickr.css) in your code.
 
 ``` html
 <link href='react-colorpickr.css' rel='stylesheet' />
@@ -55,8 +55,8 @@ the colorpicker. Returns a color object.
 
 #### `value`
 
-Must be a string and a valid `HEX`, `RGB`, or `RGBA` CSS value. If this isn't
-provided, a default color is used.
+Accepts a string formatted as: HSV, HSVA, HSL, HSLA, RGBA, RGBA, HEX, named colors (e.g 'red').
+If this isn't provided, a default color is used.
 
 #### `mode`
 
@@ -76,6 +76,6 @@ colorpicker is initialized on the page. Defaults to `true`.
 
 ### Developing
 
-    npm install & npm start & open http://127.0.0.1:3000/example/index.html
+    npm install & npm start
 
 Inspired by https://github.com/wangzuo/react-input-color

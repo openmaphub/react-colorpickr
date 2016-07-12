@@ -4,27 +4,21 @@ var convert = require('colr-convert');
 var tinyColor = require('tinycolor2');
 
 var colorFunc = {
-
-  isDark(color) {
-    return (color[0] * 0.299) + (color[1] * 0.587) + (color[2] * 0.114) > 186 ||
-      color[3] < 0.5;
+  isDark: function isDark(color) {
+    return color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114 > 186 || color[3] < 0.5;
   },
-
-  getColor(cssColor) {
+  getColor: function getColor(cssColor) {
     // With tinyColor, invalid colors are treated as black
     var color = tinyColor(cssColor),
-      rgba = color.toRgb(),
-      hsv = color.toHsv(),
-      hex = color.toHex();
+        rgba = color.toRgb(),
+        hsv = color.toHsv(),
+        hex = color.toHex();
 
     //check if full length color is entered, if so don't convert to short hand even if possible to.
     var isSixDigitHexColor = cssColor.length === 7;
-    
+
     // Convert to shorthand hex if applicable
-    if (!isSixDigitHexColor &&
-        hex[0] === hex[1] &&
-        hex[2] === hex[3] &&
-        hex[4] === hex[5]) {
+    if (!isSixDigitHexColor && hex[0] === hex[1] && hex[2] === hex[3] && hex[4] === hex[5]) {
       hex = [hex[0], hex[2], hex[4]].join('');
     }
 
@@ -39,21 +33,14 @@ var colorFunc = {
       hex: hex
     };
   },
-
-  rgbaColor(r, g, b, a) {
+  rgbaColor: function rgbaColor(r, g, b, a) {
     return 'rgba(' + [r, g, b, a / 100].join(',') + ')';
   },
-
-  hsv2hex(h, s, v) {
+  hsv2hex: function hsv2hex(h, s, v) {
     var rgb = convert.hsv.rgb([h, s, v]);
-    return convert.rgb.hex([
-      Math.round(rgb[0]),
-      Math.round(rgb[1]),
-      Math.round(rgb[2])]
-    ).slice(1);
+    return convert.rgb.hex([Math.round(rgb[0]), Math.round(rgb[1]), Math.round(rgb[2])]).slice(1);
   },
-
-  hsv2rgb(h, s, v) {
+  hsv2rgb: function hsv2rgb(h, s, v) {
     var rgb = convert.hsv.rgb([h, s, v]);
     return {
       r: Math.round(rgb[0]),
@@ -61,12 +48,10 @@ var colorFunc = {
       b: Math.round(rgb[2])
     };
   },
-
-  rgb2hex(r, g, b) {
+  rgb2hex: function rgb2hex(r, g, b) {
     return convert.rgb.hex([r, g, b]).slice(1);
   },
-
-  rgb2hsv(r, g, b) {
+  rgb2hsv: function rgb2hsv(r, g, b) {
     var hsv = convert.rgb.hsv([r, g, b]);
     return {
       h: Math.round(hsv[0]),
@@ -74,6 +59,7 @@ var colorFunc = {
       v: Math.round(hsv[2])
     };
   },
+
 
   /**
    * Determine x y coordinates based on color mode.
@@ -90,32 +76,32 @@ var colorFunc = {
    * @param {Object} color a color object of current values associated to key
    * @return {Object} coordinates
    */
-  colorCoords(mode, color) {
+  colorCoords: function colorCoords(mode, color) {
     var x, y, xmax, ymax;
     if (mode === 'r' || mode === 'g' || mode === 'b') {
-      xmax = 255; ymax = 255;
+      xmax = 255;ymax = 255;
       if (mode === 'r') {
         x = color.b;
-        y = (255 - color.g);
+        y = 255 - color.g;
       } else if (mode === 'g') {
         x = color.b;
-        y = (255 - color.r);
+        y = 255 - color.r;
       } else {
         x = color.r;
-        y = (255 - color.g);
+        y = 255 - color.g;
       }
     } else if (mode === 'h') {
-      xmax = 100; ymax = 100;
+      xmax = 100;ymax = 100;
       x = color.s;
-      y = (100 - color.v);
+      y = 100 - color.v;
     } else if (mode === 's') {
-      xmax = 359; ymax = 100;
+      xmax = 359;ymax = 100;
       x = color.h;
-      y = (100 - color.v);
+      y = 100 - color.v;
     } else if (mode === 'v') {
-      xmax = 359; ymax = 100;
+      xmax = 359;ymax = 100;
       x = color.h;
-      y = (100 - color.s);
+      y = 100 - color.s;
     }
 
     return {
@@ -125,6 +111,7 @@ var colorFunc = {
       ymax: ymax
     };
   },
+
 
   /**
    * Takes a mode and returns its sibling values based on x,y positions
@@ -141,7 +128,7 @@ var colorFunc = {
    * @param {Object} pos x, y coordinates
    * @return {Object} Changed sibling values
    */
-  colorCoordValue(mode, pos) {
+  colorCoordValue: function colorCoordValue(mode, pos) {
     var color = {};
     pos.x = Math.round(pos.x);
     pos.y = Math.round(pos.y);
@@ -150,27 +137,27 @@ var colorFunc = {
       case 'r':
         color.b = pos.x;
         color.g = 255 - pos.y;
-      break;
+        break;
       case 'g':
         color.b = pos.x;
         color.r = 255 - pos.y;
-      break;
+        break;
       case 'b':
         color.r = pos.x;
         color.g = 255 - pos.y;
-      break;
+        break;
       case 'h':
         color.s = pos.x;
         color.v = 100 - pos.y;
-      break;
+        break;
       case 's':
         color.h = pos.x;
         color.v = 100 - pos.y;
-      break;
+        break;
       case 'v':
         color.h = pos.x;
         color.s = 100 - pos.y;
-      break;
+        break;
     }
 
     return color;
